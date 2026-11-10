@@ -210,7 +210,10 @@ gulp.task("gen-package", ["copy-index"], function () {
     }
     fs.writeFileSync(DIST + "/package.json", JSON.stringify(info, " ", 2));
     // eslint-disable-next-line no-undef
-    exec("cd dist && yarn install --prod && yarn autoclean --force", cb);
+    exec(
+        "cd dist && yarn install --prod --ignore-engines && yarn autoclean --force",
+        cb
+    );
   });
 });
 

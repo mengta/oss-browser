@@ -129,7 +129,7 @@ angular.module('web').controller('grantTokenModalCtrl', [
           Resource: ['acs:oss:*:*:' + currentInfo.bucket],
           Condition: {
             StringLike: {
-              'oss:Prefix': item.path
+              'oss:Prefix': item.path + '*'
             }
           }
         });

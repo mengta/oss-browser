@@ -1526,17 +1526,59 @@ angular.module('web').factory('ossSvs2', [
           });
         }
 
-        get(marker).then(function(result) {
-          var arr = result.data;
+        get(marker).then(
+            function(result) {
+              var arr = result.data;
 
-          if (arr && arr.length) {
-            $timeout(() => {
-              loadStorageStatus(region, bucket, arr);
-            }, NEXT_TICK);
-          }
+              if (arr && arr.length) {
+                $timeout(() => {
+                  loadStorageStatus(region, bucket, arr);
+                }, NEXT_TICK);
+              }
 
-          resolve(result);
-        }, reject);
+              resolve(result);
+            },
+            function(err) {
+              // 只有对象级权限（没有 ListObjects 权限）时，回退为 HeadObject，
+              // 让预设路径指向单个文件的场景也能显示出该文件。
+              if (!marker && key && !key.endsWith('/')) {
+                getSingleFile(region, bucket, key).then(
+                    function(item) {
+                      resolve({
+                        data: [item],
+                        marker: null,
+                        truncated: false
+                      });
+                    },
+                    function() {
+                      reject(err);
+                    }
+                );
+              } else {
+                reject(err);
+              }
+            }
+        );
+      });
+    }
+
+    function getSingleFile(region, bucket, key) {
+      return getMeta2(region, bucket, key).then(function(meta) {
+        const arr = key.split('/').filter((k) => !!k);
+        const name = arr[arr.length - 1] || key;
+
+        return {
+          name: name,
+          path: key,
+          url: '',
+          lastModified: meta.LastModified || '',
+          etag: meta.ETag || '',
+          type: meta.ContentType || '',
+          size: Number(meta.ContentLength) || 0,
+          storageClass: meta.StorageClass || 'Standard',
+          isFile: true,
+          itemType: 'file'
+        };
       });
     }
 

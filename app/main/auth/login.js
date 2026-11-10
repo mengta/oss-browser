@@ -278,13 +278,8 @@ angular.module('web').controller('loginCtrl', [
       // 可通过 delete $scope.item.osspath 复现后续错误逻辑
       $scope.item.osspath = $scope.item.osspath || '';
 
-      if (
-        // $scope.item.osspath_isdir &&   //默认用户登陆的输入都是目录，而不是文件路径
-        $scope.item.osspath &&
-        !$scope.item.osspath.endsWith('/')
-      ) {
-        $scope.item.osspath += '/';
-      }
+      // 预设路径可能指向目录，也可能指向单个对象（例如只授权了某个文件的 STS）。
+      // 此处不再强制补 '/', 由 Auth.login 探测路径类型后统一规范化。
 
       var data = angular.copy($scope.item);
 
