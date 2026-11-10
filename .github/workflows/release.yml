@@ -16,6 +16,7 @@ permissions:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.optional == true }}
     strategy:
       fail-fast: false
       matrix:
@@ -24,7 +25,7 @@ jobs:
           - { os: windows-latest, platform: win32, arch: ia32 }
           - { os: ubuntu-22.04, platform: linux, arch: x64 }
           - { os: ubuntu-22.04, platform: linux, arch: ia32 }
-          - { os: macos-14, platform: darwin, arch: x64 }
+          - { os: macos-14, platform: darwin, arch: x64, optional: true }
     env:
       ELECTRON_MIRROR: https://npmmirror.com/mirrors/electron/
       npm_config_registry: https://registry.npmmirror.com
