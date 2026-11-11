@@ -1,5 +1,7 @@
 # Quick start
 
+> This repository (**oss-browser-plus**) is forked from [aliyun/oss-browser](https://github.com/aliyun/oss-browser). The upstream commit history is kept, and our own changes are added on top of it.
+
 Ossbrowser is a graphical management tool developed by Alibaba Cloud. It provides features similar to those of Windows Explorer. Using ossbrowser, you can view, upload, download, and manage items with ease.
 
 ## [README of Chinese](README-CN.md)

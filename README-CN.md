@@ -1,5 +1,7 @@
 # OSS Browser
 
+> 本仓库（**oss-browser-plus**）fork 自 [aliyun/oss-browser](https://github.com/aliyun/oss-browser)，保留上游的提交记录，并在其基础上进行二次开发。
+
 OSS Browser 提供类似 windows 资源管理器功能。用户可以很方便的浏览文件，上传下载文件，支持断点续传等。
 
 本工具使用开源框架 Angular 1.x + [Electron](http://electron.atom.io/)制作。
