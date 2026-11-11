@@ -72,6 +72,8 @@ module.exports = {
   "auth.remember": "入力情報の保存",
   "auth.login": "ログイン",
   "auth.akHistories": "AK 履歴",
+  "auth.akHistories.emptyHint":
+    "「入力情報の保存」をチェックしてログインに成功すると、AK がここに記録されます",
   "auth.secure": "HTTPS暗号化",
   "auth.keepLoggedIn": "ログインしたままにする",
 
@@ -442,6 +444,7 @@ module.exports = {
   enable: "有効化",
   disable: "無効化",
   show: "表示",
+  hide: "非表示",
   "can.not.get.accessKeySecret": "AccessKeySecret を取得できません",
 
   "settings.subtitle.updown": "転送設定",

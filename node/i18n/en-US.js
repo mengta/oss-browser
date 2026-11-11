@@ -73,6 +73,8 @@ module.exports = {
   "auth.remember": "Remember",
   "auth.login": "Login",
   "auth.akHistories": "AK Histories",
+  "auth.akHistories.emptyHint":
+    "AKs are recorded here after a successful login with \"Remember\" checked",
   "auth.secure": "HTTPS encryption",
   "auth.keepLoggedIn": "Keep me logged in",
 
@@ -440,6 +442,7 @@ module.exports = {
   enable: "Enable",
   disable: "Disable",
   show: "Show",
+  hide: "Hide",
   "can.not.get.accessKeySecret": "Can not get AccessKeySecret",
 
   "settings.subtitle.updown": "Transfer Settings",

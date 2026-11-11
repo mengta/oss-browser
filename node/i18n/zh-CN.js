@@ -70,6 +70,8 @@ module.exports = {
   "auth.remember": "记住秘钥",
   "auth.login": "登入",
   "auth.akHistories": "AK历史",
+  "auth.akHistories.emptyHint":
+    "勾选“记住秘钥”并登录成功后，AK 会自动记录在这里",
   "auth.secure": "HTTPS加密",
   "auth.keepLoggedIn": "保持登录",
 
@@ -425,6 +427,7 @@ module.exports = {
   enable: "启用",
   disable: "禁用",
   show: "显示",
+  hide: "隐藏",
   "can.not.get.accessKeySecret": "无法获取 AccessKeySecret",
 
   "settings.subtitle.updown": "上传下载设置",

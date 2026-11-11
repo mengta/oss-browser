@@ -7,10 +7,8 @@ angular.module('web').controller('loginCtrl', [
   '$timeout',
   '$location',
   'Const',
-  'Dialog',
   'Toast',
-  'Cipher',
-  'settingsSvs',
+  '$uibModal',
   function(
       $scope,
       _$rootScope,
@@ -20,13 +18,12 @@ angular.module('web').controller('loginCtrl', [
       $timeout,
       $location,
       Const,
-      Dialog,
-      Toast
+      Toast,
+      $modal
   ) {
     var DEF_EP_TPL = 'http://{region}.aliyuncs.com';
 
     var KEY_REMEMBER = Const.KEY_REMEMBER;
-    var SHOW_HIS = Const.SHOW_HIS;
     var SHOW_REQUEST_PAY = Const.SHOW_REQUEST_PAY;
     var SHOW_SECURE = Const.SHOW_SECURE;
     const KEEP_ME_LOGGED_IN = Const.KEEP_ME_LOGGED_IN;
@@ -39,7 +36,6 @@ angular.module('web').controller('loginCtrl', [
       gtab: parseInt(localStorage.getItem('gtag') || 1),
       flags: {
         remember: 'NO',
-        showHis: 'NO',
         requestpaystatus: 'NO',
         secure: 'YES',
         keepLoggedIn: 'YES'
@@ -54,9 +50,8 @@ angular.module('web').controller('loginCtrl', [
       reg_osspath: /^oss:\/\//,
       regions: regions,
       onSubmit: onSubmit,
-      showCleanHistories: showCleanHistories,
+      showHistories: showHistories,
       useHis: useHis,
-      showRemoveHis: showRemoveHis,
 
       open: open,
 
@@ -160,7 +155,6 @@ angular.module('web').controller('loginCtrl', [
 
     function init() {
       $scope.flags.remember = localStorage.getItem(KEY_REMEMBER) || 'NO';
-      $scope.flags.showHis = localStorage.getItem(SHOW_HIS) || 'NO';
       $scope.flags.keepLoggedIn =
         localStorage.getItem(KEEP_ME_LOGGED_IN) || 'YES';
       // requestPay状态
@@ -189,10 +183,6 @@ angular.module('web').controller('loginCtrl', [
         }
       });
 
-      $scope.$watch('flags.showHis', function(v) {
-        localStorage.setItem(SHOW_HIS, v);
-      });
-
       $scope.$watch('flags.requestpaystatus', function(v) {
         localStorage.setItem(SHOW_REQUEST_PAY, v);
       });
@@ -215,6 +205,21 @@ angular.module('web').controller('loginCtrl', [
       });
     }
 
+    function showHistories() {
+      var modal = $modal.open({
+        templateUrl: 'main/auth/ak-histories.html',
+        controller: 'akHistoriesCtrl',
+        size: 'lg',
+        resolve: {
+          onUse: function() {
+            return useHis;
+          }
+        }
+      });
+
+      modal.result.then(listHistories, listHistories);
+    }
+
     function useHis(h) {
       if (h.cname) {
         $scope.eptplType = 'cname';
@@ -225,44 +230,10 @@ angular.module('web').controller('loginCtrl', [
       $scope.item.desc = h.desc || '';
     }
 
-    function showRemoveHis(h) {
-      var title = T('auth.removeAK.title'); // 删除AK
-      var message = T('auth.removeAK.message', { id: h.id }); // 'ID：'+h.id+', 确定删除?'
-
-      Dialog.confirm(
-          title,
-          message,
-          function(b) {
-            if (b) {
-              AuthInfo.removeFromHistories(h.id);
-              listHistories();
-            }
-          },
-          1
-      );
-    }
-
     function listHistories() {
-      $scope.his = AuthInfo.listHistories();
-    }
+      var his = AuthInfo.listHistories();
 
-    function showCleanHistories() {
-      var title = T('auth.clearAKHistories.title'); // 清空AK历史
-      var message = T('auth.clearAKHistories.message'); // 确定?
-      var successMessage = T('auth.clearAKHistories.successMessage'); // 已清空AK历史
-
-      Dialog.confirm(
-          title,
-          message,
-          function(b) {
-            if (b) {
-              AuthInfo.cleanHistories();
-              listHistories();
-              Toast.success(successMessage);
-            }
-          },
-          1
-      );
+      $scope.his = angular.isArray(his) ? his : [];
     }
 
     function onSubmit(form1) {
